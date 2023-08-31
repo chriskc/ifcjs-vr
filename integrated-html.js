@@ -236,16 +236,26 @@ const stats = new Stats();
 stats.showPanel(2);
 document.body.appendChild(stats.dom);
 
-// animate cubes
-function animate() {
+renderer.setAnimationLoop(() => {
     stats.begin();
     const delta = clock.getDelta(); // camera - cameracontrols lib
     cameraControls.update(delta); // camera - cameracontrols lib
-    requestAnimationFrame(animate);
     renderer.render(scene, camera);
     stats.end();
 
     labelRenderer.render(scene, camera);
-}
+});
+
+// animate cubes
+// function animate() {
+//     stats.begin();
+//     const delta = clock.getDelta(); // camera - cameracontrols lib
+//     cameraControls.update(delta); // camera - cameracontrols lib
+//     requestAnimationFrame(animate);
+//     renderer.render(scene, camera);
+//     stats.end();
+
+//     labelRenderer.render(scene, camera);
+// }
 
 animate();
