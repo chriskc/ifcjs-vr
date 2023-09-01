@@ -44181,6 +44181,10 @@ renderer.setAnimationLoop(() => {
 
 // animate();
 
+navigator.xr.requestSession("immersive-ar", {
+    requiredFeatures: ["local", "anchors", "dom-overlay", "hit-test"],
+});
+
 document.addEventlistener("vlaunch-ar-tracking", handleTrackingChanged);
 
 const handleTrackingChanged = (event) => {

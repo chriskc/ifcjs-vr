@@ -260,6 +260,33 @@ renderer.setAnimationLoop(() => {
 
 // animate();
 
+if (navigator.xr) {
+    navigator.xr.isSessionSupported("immersive-vr").then((isSupported) => {
+        if (isSupported) {
+            userButton.addEventListener("click", onButtonClicked);
+            userButton.textContent = "Enter XR";
+            userButton.disabled = false;
+        }
+    });
+}
+
+function onButtonClicked() {
+    if (!xrSession) {
+        navigator.xr.requestSession("immersive-vr").then((session) => {
+            xrSession = session;
+            // onSessionStarted() not shown for reasons of brevity and clarity.
+            onSessionStarted(xrSession);
+        });
+    } else {
+        // Button is a toggle button.
+        xrSession.end();
+    }
+}
+
+navigator.xr.requestSession("immersive-ar", {
+    requiredFeatures: ["local", "anchors", "dom-overlay", "hit-test"],
+});
+
 document.addEventlistener("vlaunch-ar-tracking", handleTrackingChanged);
 
 const handleTrackingChanged = (event) => {
