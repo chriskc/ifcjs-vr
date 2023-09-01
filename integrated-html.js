@@ -258,4 +258,29 @@ renderer.setAnimationLoop(() => {
 //     labelRenderer.render(scene, camera);
 // }
 
-animate();
+// animate();
+
+document.addEventlistener("vlaunch-ar-tracking", handleTrackingChanged);
+
+const handleTrackingChanged = (event) => {
+    switch (event.detail.state) {
+        case "normal":
+            // the tracking is working normally
+            break;
+        case "not-available":
+            // tracking is not running
+            break;
+        case "limited-excessive-motion":
+            // the device is currently moving too fast to track
+            break;
+        case "limited-initializing":
+            // the tracking is still being initialized
+            break;
+        case "limited-insufficient-features":
+            // the tracking is not able to track enough features in the user's environment
+            break;
+        case "limited-relocalizing":
+            // the tracking is currently relocalizing
+            break;
+    }
+};
