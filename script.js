@@ -357,6 +357,9 @@ scene.add(hemisphereLight);
 const hemisphereLightHelper = new HemisphereLightHelper(hemisphereLight);
 scene.add(hemisphereLightHelper);
 
+const ambientLight = new AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
 // -----------------------------------------------------
 // create raycaster
 // -----------------------------------------------------
@@ -551,4 +554,16 @@ solarSystemControls
 const colorParam = { color: 0xffffff };
 solarSystemControls.addColor(colorParam, "color").onChange(() => {
     moonMesh.material.color.set(colorParam.color);
+});
+
+const ambientLightControls = gui.addFolder("Ambient Light");
+ambientLightControls
+    .add(ambientLight, "intensity")
+    .min(0)
+    .max(2)
+    .step(0.01)
+    .name("Intensity");
+const ambientLightColorParam = { color: 0xffffff };
+ambientLightControls.addColor(ambientLightColorParam, "color").onChange(() => {
+    ambientLight.color.set(ambientLightColorParam.color);
 });
