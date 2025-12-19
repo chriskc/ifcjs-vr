@@ -16,6 +16,7 @@ import {
     Clock,
     DirectionalLight,
     HemisphereLight,
+    AmbientLight,
     DirectionalLightHelper,
     AxesHelper,
     GridHelper,
@@ -39,6 +40,8 @@ const subsetOfTHREE = {
     },
 };
 import CameraControls from "camera-controls";
+
+import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
@@ -160,6 +163,9 @@ const hemisphereLight = new HemisphereLight(0xffffff, 0x5533ff);
 scene.add(hemisphereLight);
 // const hemisphereLightHelper = new HemisphereLightHelper(hemisphereLight);
 // scene.add(hemisphereLightHelper);
+
+const ambientLight = new AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
 
 // -----------------------------------------------------
 // create raycaster
@@ -286,6 +292,29 @@ function onButtonClicked() {
 navigator.xr.requestSession("immersive-ar", {
     requiredFeatures: ["local", "anchors", "dom-overlay", "hit-test"],
 });
+
+// -----------------------------------------------------
+// initialize gui
+// -----------------------------------------------------
+
+const gui = new GUI();
+
+const ambientLightControls = gui.addFolder("Ambient Light");
+const ambientLightParams = {
+    color: ambientLight.color.getHex(),
+    intensity: ambientLight.intensity,
+};
+ambientLightControls.addColor(ambientLightParams, "color").onChange(() => {
+    ambientLight.color.setHex(ambientLightParams.color);
+});
+ambientLightControls
+    .add(ambientLightParams, "intensity")
+    .min(0)
+    .max(2)
+    .step(0.01)
+    .onChange(() => {
+        ambientLight.intensity = ambientLightParams.intensity;
+    });
 
 document.addEventlistener("vlaunch-ar-tracking", handleTrackingChanged);
 
