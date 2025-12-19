@@ -16,6 +16,7 @@ import {
     Clock,
     DirectionalLight,
     HemisphereLight,
+    AmbientLight,
     DirectionalLightHelper,
     AxesHelper,
     GridHelper,
@@ -50,6 +51,8 @@ import {
 import Stats from "stats.js/src/Stats";
 
 import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
+
+import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 // -----------------------------------------------------
 // initialize scene
@@ -161,6 +164,9 @@ scene.add(hemisphereLight);
 // const hemisphereLightHelper = new HemisphereLightHelper(hemisphereLight);
 // scene.add(hemisphereLightHelper);
 
+const ambientLight = new AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
 // -----------------------------------------------------
 // create raycaster
 // -----------------------------------------------------
@@ -203,6 +209,24 @@ window.addEventListener("dblclick", (event) => {
         ifcJsTitle.element = null;
         ifcJsTitle.removeFromParent();
     };
+});
+
+// -----------------------------------------------------
+// initialize gui
+// -----------------------------------------------------
+
+const gui = new GUI();
+
+const ambientLightControls = gui.addFolder("Ambient Light");
+ambientLightControls
+    .add(ambientLight, "intensity")
+    .min(0)
+    .max(2)
+    .step(0.01)
+    .name("Intensity");
+const ambientLightColorParam = { color: 0xffffff };
+ambientLightControls.addColor(ambientLightColorParam, "color").onChange(() => {
+    ambientLight.color.set(ambientLightColorParam.color);
 });
 
 // -----------------------------------------------------
