@@ -44028,7 +44028,7 @@ modelLoader.load(
     },
 
     (progress) => {
-        const current = (progress.loaded / progress.total) * 100;
+        const current = Math.min((progress.loaded / progress.total) * 100, 100);
         const formatted = Math.trunc(current * 100) / 100;
         modelLoadingText.textContent = `Loading: ${formatted}%`;
     },
@@ -44180,6 +44180,29 @@ renderer.setAnimationLoop(() => {
 // }
 
 // animate();
+
+if (navigator.xr) {
+    navigator.xr.isSessionSupported("immersive-vr").then((isSupported) => {
+        if (isSupported) {
+            userButton.addEventListener("click", onButtonClicked);
+            userButton.textContent = "Enter XR";
+            userButton.disabled = false;
+        }
+    });
+}
+
+function onButtonClicked() {
+    if (!xrSession) {
+        navigator.xr.requestSession("immersive-vr").then((session) => {
+            xrSession = session;
+            // onSessionStarted() not shown for reasons of brevity and clarity.
+            onSessionStarted(xrSession);
+        });
+    } else {
+        // Button is a toggle button.
+        xrSession.end();
+    }
+}
 
 navigator.xr.requestSession("immersive-ar", {
     requiredFeatures: ["local", "anchors", "dom-overlay", "hit-test"],

@@ -123,7 +123,7 @@ modelLoader.load(
     },
 
     (progress) => {
-        const current = (progress.loaded / progress.total) * 100;
+        const current = Math.min((progress.loaded / progress.total) * 100, 100);
         const formatted = Math.trunc(current * 100) / 100;
         modelLoadingText.textContent = `Loading: ${formatted}%`;
     },
